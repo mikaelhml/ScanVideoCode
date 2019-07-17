@@ -7,13 +7,13 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
     <Button
-            android:text="LER QR CODE"
+            android:text="Montar Arquivo"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="186dp"
-            tools:layout_editor_absoluteX="179dp" android:id="@+id/btnLerQrCode" tools:ignore="MissingConstraints"/>
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="325dp"
+            tools:layout_editor_absoluteX="132dp" android:id="@+id/btnLerQrCode" tools:ignore="MissingConstraints"/>
     <Button
             android:text="CRIA QR CODE"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="391dp"
-            tools:layout_editor_absoluteX="178dp" android:id="@+id/btnCriarQrCode"/>
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="467dp"
+            tools:layout_editor_absoluteX="147dp" android:id="@+id/btnCriarQrCode"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
