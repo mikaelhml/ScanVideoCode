@@ -10,7 +10,7 @@
             android:text="Montar Arquivo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" tools:layout_editor_absoluteY="325dp"
-            tools:layout_editor_absoluteX="132dp" android:id="@+id/btnLerQrCode" tools:ignore="MissingConstraints"/>
+            tools:layout_editor_absoluteX="132dp" android:id="@+id/btnLerQRCode" tools:ignore="MissingConstraints"/>
     <Button
             android:text="CRIA QR CODE"
             android:layout_width="wrap_content"
