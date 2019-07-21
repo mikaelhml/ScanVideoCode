@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "382896741805",
+    "firebase_url": "https://scanvideocode-5fa6d.firebaseio.com",
+    "project_id": "scanvideocode-5fa6d",
+    "storage_bucket": "scanvideocode-5fa6d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382896741805:android:2e1143932f5d1062",
+        "android_client_info": {
+          "package_name": "br.iesb.scanvideocode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382896741805-309ttuv9grdvn6s3bg6o37ijat8c9tuj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgLschkqJQOKZJPLnONNN_s1Din47mIsk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382896741805-309ttuv9grdvn6s3bg6o37ijat8c9tuj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
