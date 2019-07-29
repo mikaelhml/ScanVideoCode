@@ -6,12 +6,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
+
+
     <Button
-            android:text="Montar Arquivo"
+            android:text="Ler QR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnScanQRCode"
             android:layout_alignParentBottom="true" android:layout_marginBottom="8dp"
             android:layout_alignParentEnd="true" android:layout_marginEnd="8dp" android:layout_alignParentStart="true"
             android:layout_marginStart="0dp"/>
+    <Button
+            android:text="Montar Arquivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnCriarQRCode"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentEnd="true" android:layout_marginEnd="4dp" android:layout_alignParentStart="true"
+            android:layout_marginStart="4dp" android:layout_above="@+id/btnScanQRCode"/>
+
+
+    <ImageView android:layout_width="512dp"
+               android:layout_height="512dp"
+               android:id="@+id/img_QRCode"/>
 </RelativeLayout>
