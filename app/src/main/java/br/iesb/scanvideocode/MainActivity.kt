@@ -1,18 +1,13 @@
 package br.iesb.scanvideocode
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -21,13 +16,13 @@ import com.google.zxing.WriterException
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.*
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.*
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import java.io.ByteArrayOutputStream;
+
+
 
 class MainActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,16 +35,37 @@ class MainActivity : AppCompatActivity() {
             iniciaScan()
         }
         btnCriarQRCode.setOnClickListener {
-            criarQRCode()
+            val w = 15
+            val h = 15
+
+            val conf = Bitmap.Config.ARGB_8888 // see other conf types
+            val bitmap = Bitmap.createBitmap(w, h, conf)
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            val image = stream.toByteArray()
+            criarQRCode(image)
         }
     }
 
-    private fun criarQRCode() {
-        carregarImg()
+    private fun criarQRCode(string64: ByteArray, b: Boolean = false) {
+        if(!b){
+            carregarImg()
+        }
+        else{
+            gerarQR(string64)
+        }
+
+
+
+    }
+
+    @SuppressLint("ShowToast")
+    private fun gerarQR(string64: ByteArray) {
         val writer = QRCodeWriter()
+        val string = " teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste te"
         img_QRCode as ImageView
         try {
-            val bitMatrix = writer.encode("teste", BarcodeFormat.QR_CODE, 512, 512)
+            val bitMatrix = writer.encode(string, BarcodeFormat.QR_CODE, 512, 512)
             val width = 512
             val height = 512
             val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
@@ -61,9 +77,10 @@ class MainActivity : AppCompatActivity() {
                         bmp.setPixel(x, y, Color.BLACK)
                 }
             }
-            //img_QRCode.setImageBitmap(bmp)
+            img_QRCode.setImageBitmap(bmp)
         } catch (e: WriterException) {
             //Log.e("QR ERROR", ""+e);
+            Toast.makeText(this,"Fuck",Toast.LENGTH_LONG)
         }
 
     }
@@ -79,12 +96,14 @@ class MainActivity : AppCompatActivity() {
         IntentIntegrator(this).initiateScan()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if (requestCode == 111 && resultCode == RESULT_OK) {
             val selectedFile = data?.data //The uri with the location of the file
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, selectedFile)
-            img_QRCode.setImageBitmap(bitmap)
+            val string64 = convert(bitmap);
+            criarQRCode(string64,true)
         }
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
 
@@ -92,7 +111,14 @@ class MainActivity : AppCompatActivity() {
             if (result.contents == null) {
                 Toast.makeText(this, "Está vazio", Toast.LENGTH_LONG).show()
             } else {
+
+
+                val options = BitmapFactory.Options()
+                val bitmap = BitmapFactory.decodeByteArray(result.contents.toByteArray(), 0, result.contents.toString().length, options)
+                img_QRCode.setImageBitmap(bitmap)
                 Toast.makeText(this, result.contents.toString(), Toast.LENGTH_LONG).show()
+
+
             }
 
         } else {
@@ -101,16 +127,26 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun encoder(filePath: String): String{
-        val bytes = File(filePath).readBytes()
-        val base64 = Base64.getEncoder().encodeToString(bytes)
-        return base64
+    fun convert(bitmap: Bitmap): ByteArray {
+        //val outputStream = ByteArrayOutputStream()
+        //bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+
+        //return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+        val image = stream.toByteArray()
+        return image
+
     }
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun decoder(base64Str: String, pathFile: String): Unit{
-        val imageByteArray = Base64.getDecoder().decode(base64Str)
-        File(pathFile).writeBytes(imageByteArray)
+
+    @Throws(IllegalArgumentException::class)
+    fun desconverte(base64Str: String): Bitmap {
+        val decodedBytes = Base64.decode(
+            base64Str.substring(base64Str.indexOf(",") + 1),
+            Base64.DEFAULT
+        )
+
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
     }
 
 
