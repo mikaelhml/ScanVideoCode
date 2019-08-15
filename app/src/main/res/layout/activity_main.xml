@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
+
+
+    <Button
+            android:text="Ler QR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnScanQRCode"
+            android:layout_alignParentBottom="true" android:layout_marginBottom="8dp"
+            android:layout_alignParentEnd="true" android:layout_marginEnd="8dp" android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"/>
     <Button
             android:text="Montar Arquivo"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="325dp"
-            tools:layout_editor_absoluteX="132dp" android:id="@+id/btnLerQRCode" tools:ignore="MissingConstraints"/>
-    <Button
-            android:text="CRIA QR CODE"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="467dp"
-            tools:layout_editor_absoluteX="147dp" android:id="@+id/btnCriarQrCode"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="wrap_content"
+            android:id="@+id/btnCriarQRCode"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentEnd="true" android:layout_marginEnd="4dp" android:layout_alignParentStart="true"
+            android:layout_marginStart="4dp" android:layout_above="@+id/btnScanQRCode"/>
+
+
+    <ImageView android:layout_width="512dp"
+               android:layout_height="512dp"
+               android:id="@+id/img_QRCode"/>
+</RelativeLayout>
