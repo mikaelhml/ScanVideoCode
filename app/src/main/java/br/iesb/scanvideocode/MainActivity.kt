@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import java.io.ByteArrayOutputStream;
-
+import kotlin.experimental.and
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,11 +43,23 @@ class MainActivity : AppCompatActivity() {
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
             val image = stream.toByteArray()
-            criarQRCode(image)
+            var hexChar = bytesToHex(image)
+            criarQRCode(hexChar)
         }
     }
 
-    private fun criarQRCode(string64: ByteArray, b: Boolean = false) {
+    fun bytesToHex(bytes: ByteArray): String {
+        val hexArray = "0123456789ABCDEF".toCharArray()
+        val hexChars = CharArray(bytes.size * 2)
+        for (j in bytes.indices) {
+            val v = (bytes[j] and 0xFF.toByte()).toInt()
+            hexChars[j * 2] = hexArray[v ushr 4]
+            hexChars[j * 2 + 1] = hexArray[v and 0x0F]
+        }
+        return String(hexChars)
+    }
+
+    private fun criarQRCode(string64: String, b: Boolean = false) {
         if(!b){
             carregarImg()
         }
@@ -60,9 +72,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("ShowToast")
-    private fun gerarQR(string64: ByteArray) {
+    private fun gerarQR(string64: String) {
         val writer = QRCodeWriter()
-        val string = " teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste te"
+        val string = " teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste teste teste teste teste teste  teste teste teste t"
         img_QRCode as ImageView
         try {
             val bitMatrix = writer.encode(string, BarcodeFormat.QR_CODE, 512, 512)
